@@ -243,7 +243,17 @@ class Pedido {
         return $total;
     }
 
-        # FAZER DETALHES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public function detalhes() {
+        echo "<br> ----- Detalhes do pedido -----<br>";
+        echo "<br> Nome do cliente: $this->cliente <br>";
+        echo "<br> Produtos: <br>";
+        for ($i=0;$i<sizeof($this->itens);$i++) {
+            echo "<br>-" . $this->itens[1][$i] ." ". $this->itens[0][$i]->nome;
+        }
+        echo "<br>";
+        echo "<br>Total: " . $this->total();
+
+    }
 
 }
 
@@ -253,5 +263,111 @@ $pedido->adicionarItem($arroz,2);
 $pedido->adicionarItem($mandioca,5);
 
 echo "O total é: <br>".$pedido->total()."<br>";
+
+$pedido->detalhes();
+
+
+echo "<br>---------------ATIVIDADE 6---------------<br>";
+
+class Turma {
+
+    public string $disciplina;
+    public array $alunos;
+
+    public function __construct(string $disciplina){
+        $this->disciplina = $disciplina;
+    }
+
+    public function adicionarAluno(Aluno $aluno) {
+        $this->alunos[] = $aluno;
+    }
+
+    public function melhorAluno() {
+        $melhorAluno = $this->alunos[0];
+
+        foreach ($this->alunos as $aluno) {
+
+            if ($aluno->media()>$melhorAluno->media()) {
+                $melhorAluno=$aluno;
+            }
+            
+        }
+        return $melhorAluno;
+    }
+
+    public function resultadoFinal() {
+        echo "<br>---Resultado Final---<br>";
+
+        foreach ($this->alunos as $aluno) {
+            echo "<br>O aluno $aluno->nome foi aprovado? (1=Sim, 0=não): " . $aluno->aprovado();
+        }
+
+    }
+
+}
+
+$aluno2 = new Aluno('Jonas','202509');
+$aluno3 = new Aluno('Marcos','202508');
+
+$aluno2->adicionarNota(5);
+$aluno2->adicionarNota(7);
+$aluno2->adicionarNota(10);
+
+$aluno3->adicionarNota(2);
+$aluno3->adicionarNota(10);
+$aluno3->adicionarNota(10);
+
+$turma  = new Turma('Matemática');
+
+$turma->adicionarAluno($aluno);
+$turma->adicionarAluno($aluno2);
+$turma->adicionarAluno($aluno3);
+
+echo "O melhor aluno da turma é: " . $turma->melhorAluno()->nome;
+
+$turma->resultadoFinal();
+
+echo "<br>---------------ATIVIDADE 7---------------<br>";
+
+class Agenda {
+
+    public array $contatos;
+
+    public function adicionarContato(string $nome,string $telefone) {
+        $this->contatos[$nome] = $telefone;
+    }
+
+    public function removerContato(string $nome) {
+        $this->contatos[$nome] = NULL;
+    }
+
+    public function buscarContato(string $nome) {
+        if (!empty($this->contatos[$nome])) {
+            echo "<br>Telefone do contato $nome é ".$this->contatos[$nome];
+        }
+        else {
+            echo "<br>Essse contato '$nome' não existe";
+        }
+    }
+
+    public function listarContatos() {
+        echo "<br> ---Listando contatos---<br>";
+        foreach ($this->contatos as $nome => $telefone) {
+            echo "<br> $nome - $telefone";
+        }
+    }
+
+}
+
+$agenda = new Agenda;
+
+$agenda->adicionarContato('paulo','123');
+$agenda->adicionarContato('pedro','321');
+$agenda->adicionarContato('pedra','543');
+
+$agenda->buscarContato('paulo');
+$agenda->buscarContato('prima');
+
+$agenda->listarContatos();
 
 ?>
