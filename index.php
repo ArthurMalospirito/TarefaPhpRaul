@@ -1,14 +1,14 @@
 <?php
 
-echo "---------------ATIVIDADE 1---------------";
+echo "<br>---------------ATIVIDADE 1---------------<br>";
 
 class Produto {
 
-    public $nome;
+    public string $nome;
     public float $preco;
     public int $estoque;
 
-    public function __construct($nome,float $preco, int $estoque) {
+    public function __construct(string $nome,float $preco, int $estoque) {
         $this->nome = $nome;
         $this->preco = $preco;
         $this->estoque = $estoque;
@@ -57,6 +57,201 @@ $veneno->vender(5);
 
 $veneno->resumo();
 
-echo "---------------ATIVIDADE 2---------------";
+echo "<br>---------------ATIVIDADE 2---------------<br>";
+
+class Aluno {
+    public string $nome;
+    public string $matricula;
+    public array $notas;
+
+    public function __construct(string $nome,string $matricula) {
+        $this->nome = $nome;
+        $this->matricula = $matricula;
+    }
+
+    public function adicionarNota(float $nota) {
+        $this->notas[] = $nota;
+        
+    }
+
+    public function media() {
+        $media = 0;
+        $i = 0;
+        $somaMedia =0;
+
+        foreach ($this->notas as $nota) {
+            $somaMedia +=$nota;
+            $i+=1;
+        }
+        $media = $somaMedia/$i;
+        
+        return $media;
+
+    }
+
+    public function aprovado() {
+        return $this->media()>=6;
+
+    }
+
+}
+
+
+$aluno = new Aluno('Pedro','202510');
+
+$aluno->adicionarNota(7);
+$aluno->adicionarNota(6);
+$aluno->adicionarNota(8);
+
+echo "<br>A média é: " . $aluno->media() . "<br>";
+
+echo "<br>O aluno foi aprovado? (1=Sim, 0=não): " . $aluno->aprovado() . "<br>";
+
+
+echo "<br>---------------ATIVIDADE 3---------------<br>";
+
+class ContaBancaria {
+    public string $titular;
+    public float $saldo;
+
+    public function __construct(string $titular,float $saldo){
+        $this->titular = $titular;
+        $this->saldo = $saldo;
+    }
+
+    public function depositar(float $valor) {
+        $this->saldo+=$valor;
+        echo "<br>Saldo atual: " . $this->saldo . "<br>";
+    }
+
+    public function sacar(float $valor){
+        if ($this->saldo-$valor<0){
+            echo "<br> Você não tem dinheiro suficiente para sacar<br>";
+        }
+        else {
+            $this->saldo-=$valor;
+            echo "<br>Saldo atual: " . $this->saldo . "<br>";
+        }
+    }
+    
+    public function transferir(ContaBancaria $destinatario,float $valor) {
+        if ($this->saldo-$valor<0){
+            echo "<br> Você não tem dinheiro suficiente para transferir<br>";
+        }
+        else {
+            $this->saldo-=$valor;
+            $destinatario->saldo+=$valor;
+            echo "<br>Saldo atual: " . $this->saldo . "<br>";
+        }
+    }
+
+
+}
+
+
+$conta = new ContaBancaria('Bruno',1500.00);
+$conta2 = new ContaBancaria('Bruna',100);
+
+$conta->depositar(150);
+$conta->sacar(2000);
+$conta->sacar(200);
+$conta->transferir($conta2,150);
+
+echo "<br>---------------ATIVIDADE 4---------------<br>";
+
+class Biblioteca {
+    public string $nome;
+    public array $livros;
+
+    public function __construct(string $nome){
+        $this->nome = $nome;
+    }
+
+    public function adicionarLivro(string $titulo) {
+        $this->livros[] = $titulo;
+    }
+
+    public function buscarLivro(string $termo) {
+        $livrosComTermo = [];
+        foreach ($this->livros as $livro) {
+            if ($livro==$termo) {
+                $livrosComTermo[] = $livro;
+            }
+        }
+        var_dump($livrosComTermo);
+    }
+
+    public function listarLivros() {
+        echo "<br> Listando os livros da biblioteca $this->nome <br>";
+        foreach ($this->livros as $livro){
+            echo "<br> $livro";
+        }
+        echo '<br>';
+    }
+
+}
+
+$biblioteca = new Biblioteca('Biblioteca IF');
+
+$biblioteca->adicionarLivro('informática');
+$biblioteca->adicionarLivro('português');
+$biblioteca->adicionarLivro('matemática');
+$biblioteca->adicionarLivro('agronomia');
+
+$biblioteca->buscarLivro('português');
+
+$biblioteca->listarLivros();
+
+echo "<br>---------------ATIVIDADE 5---------------<br>";
+
+class Item {
+    public string $nome;
+    public float $preco;
+    
+    public function __construct(string $nome,float $preco) {
+        $this->nome = $nome;
+        $this->preco =$preco;
+    }
+}
+
+$arroz = new Item('Arroz',24.99);
+$mandioca = new Item('Mandioca',1.99);
+
+class Pedido {
+
+    public string $cliente;
+    public $itens= [];
+    private $contItens=0;
+
+    public function __construct(string $cliente) {
+        $this->cliente = $cliente;
+    }
+
+    public function adicionarItem(Item $item,int $quantidade) {
+
+        $this->itens[0][$this->contItens] = $item;
+        $this->itens[1][$this->contItens] = $quantidade;
+        $this->contItens+=1;
+
+    }
+
+    public function total() {
+        $total = 0;
+        for($i=0;$i<sizeof($this->itens);$i++) {
+            $total+=$this->itens[0][$i]->preco;
+        }
+        return $total;
+    }
+
+        # FAZER DETALHES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+}
+
+$pedido = new Pedido('Jonas');
+
+$pedido->adicionarItem($arroz,2);
+$pedido->adicionarItem($mandioca,5);
+
+echo "O total é: <br>".$pedido->total()."<br>";
 
 ?>
